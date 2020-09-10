@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>VaporSpace</title><link rel="shortcut icon" href=https://raw.githubusercontent.com/Mess663/cloud-image/master/img/20200412110352.png><link href=static/article.a5bee8.css rel=stylesheet></head><body><header class=header><a href=/ class=header__name>VaporSpace</a> <a href=/ class=header__index>首页</a></header><div class=title-wrap><div class=title-inner><h1>手写promise</h1><p class=time>2020-09-10 10:52</p></div></div><div class=tem style="display: none;">
+``` js
+function Promise2(fn){
+  const self = this
+  this.resloveCallbacks = []
+  this.rejectCallbacks = []
+  this.status = 0
+  this.data = null
+  this.rejectReason = &#39;&#39;
+
+  const resolve = function(res) {
+    setTimeout(() =&gt; {
+      self.data = res
+      self.status = 1
+      self.resloveCallbacks.forEach(item =&gt; item(res));
+    }, 0);
+  }
+
+  const reject = function(err) {
+    setTimeout(() =&gt; {
+      self.rejectReason = err
+      self.status = -1
+
+      self.rejectCallbacks.forEach(item =&gt; item(err));
+    }, 0);
+  }
+  
+  try {
+    fn(resolve, reject)
+  } catch (error) {
+    reject(self.rejectReason)
+  }
+}
+Promise2.prototype.then = function(resolve, reject) {
+
+  if (this.status === 0) {
+    return new Promise((nextResolve, nextReject) =&gt; {
+      this.resloveCallbacks.push((data) =&gt; {
+        try {
+          const thenRes = resolve(data)
+
+          resolvePromise(thenRes, nextResolve, nextReject)
+        } catch (error) {
+          nextReject(error)
+        }
+      })
+  
+      this.rejectCallbacks.push(reject)
+    })
+  } 
+
+  if (this.status === 1) {
+    return new Promise2((nextResolve, nextReject) =&gt; {
+      setTimeout(() =&gt; {
+        try {
+          const thenRes = resolve(this.data)
+  
+          resolvePromise(thenRes, nextResolve, nextReject)
+        } catch (error) {
+          nextReject(error)
+        }
+      })
+    })
+  }
+
+  if (this.status === -1) {
+    return new Promise2((nextResolve, nextReject) =&gt; {
+      setTimeout(() =&gt; {
+        try {
+          const thenRes = resolve(this.rejectReason)
+  
+          resolvePromise(thenRes, nextResolve, nextReject)
+        } catch (error) {
+          nextReject(error)
+        }
+      })
+    })
+  }
+}
+
+function resolvePromise(thenRes, nextResolve, nextReject) {
+  if (thenRes instanceof Promise2) {
+    thenRes.then(nextResolve, nextReject)
+  } else {
+    nextResolve(thenRes)
+  }
+}
+
+const promise = new Promise2(function(x,y){
+  setTimeout(()=&gt;{
+      x(101)
+  }, 1000)
+})
+
+promise.then((z)=&gt;{
+  console.log(z)
+  return new Promise2((x) =&gt; setTimeout(() =&gt; x(102), 1000))
+}).then((x) =&gt; {
+  console.log(x)
+  return 103
+}).then(console.log)
+```
+</div><article></article><script src=static/runtime.f6d391.js></script><script src=static/vendor.0ea452.js></script><script src=static/article.6891ac.js></script></body></html>
