@@ -11,15 +11,15 @@
     <a class="header__name">VaporSpace</a>
     <a class="header__index">首页</a>
   </header>
-
+  
   <div class="list">
-    {{range .}}
-      <a href="/article?id={{.Id}}" class="list-item">
-        <h2 class="list-item__title">{{.Title}}</h2>
-        <p class="list-item__desc">{{.Content}}</p>
-        <div class="list-item__time">{{.Time}}</div>
+    <% articles.forEach(function(item){%>
+      <a href="/<%= item.index %>.html" class="list-item">
+        <h2 class="list-item__title"><%= item.title %></h2>
+        <p class="list-item__desc"><%= item.description %></p>
+        <div class="list-item__time"><%= item.createTime %></div>
       </a>
-    {{end}}
+    <% }) %>
   </div>
 </body>
 

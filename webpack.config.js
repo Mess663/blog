@@ -10,13 +10,13 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const os = require('os');
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+const BlogsPlugin = require('./blogsPlugin')
 
 const { ENV } = process.env;
 const isPro = ENV === 'production';
 const entry = {
   'index': 'src/pages/index/index.js',
   'article': 'src/pages/article/index.js',
-  'admin': 'src/pages/admin/index.js'
 }
 const hashChoice = isPro ? 'chunkhash:6' : 'hash'
 
@@ -183,7 +183,7 @@ module.exports = {
       // 允许 HappyPack 输出日志
       verbose: true
     }),
-    ...getWebpackPlugins(Object.keys(entry)),
+    ...getHtmlPlugins(Object.keys(entry)),
     new HtmlWebpackInlineSourcePlugin(),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
@@ -198,6 +198,7 @@ module.exports = {
     new webpack.HashedModuleIdsPlugin(),
     // 打包自动缓存
     new HardSourceWebpackPlugin(),
+    new BlogsPlugin(),
 
     ...(isPro ? [] : [
       // 要想给bundle命名带上contenthash或者chunkhash，就不能有这个插件
@@ -206,7 +207,7 @@ module.exports = {
   ]
 };
 
-function getWebpackPlugins(entrys) {
+function getHtmlPlugins(entrys) {
   return entrys.map(item => new HtmlWebpackPlugin({
     filename: `${item}.html`,
     template: `src/pages/${item}/index.html`,
