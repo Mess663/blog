@@ -1,0 +1,72 @@
+@import "~src/common/less/common";
+@import "~src/common/less/minimalism/minimalism.css";
+
+body {
+  padding-bottom: 80px;
+}
+
+img {
+  width: 100% !important;
+}
+
+.header {
+  background-color: #333;
+  color: #fff;
+  padding: 30px 30px;
+  display: flex;
+  justify-content: space-between;
+
+  &__name, &__index {
+    color: #fff;
+    text-decoration: none;
+    -webkit-text-stroke: unset;
+  }
+}
+
+.title-wrap {
+  height: 300px;
+  background-color: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .title-inner {
+    width: 40%;
+    min-width: 500px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 50px;
+    margin-bottom: 24px;
+    color: #fff;
+  }
+
+  .time {
+    font-size: 20px;
+    font-family: Lora,'Times New Roman',serif;
+    font-style: italic;
+    font-weight: 300;
+
+  }
+}
+
+article {
+  width: 40%;
+  min-width: 500px;
+  margin: 20px auto;
+}
+
+pre, code {
+  display: inline-block;
+  background: #f4f4f4;
+  word-wrap:break-word; /* Internet Explorer 5.5+ */ 
+  white-space: pre-wrap; /* Firefox */
+}
+
+code {
+  padding: 5px 10px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}

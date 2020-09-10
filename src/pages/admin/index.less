@@ -1,0 +1,57 @@
+@import "~src/common/less/common";
+
+html, body {
+  height: 100%;
+}
+
+.title-wrap {
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  position: relative;
+}
+
+.title-input {
+  width: 60%;
+  min-width: 700px;
+  height: 64px;
+  line-height: 64px;
+  padding: 0 14px;
+  outline: none;
+  display: block;
+  margin: 0 auto;
+  border: none;
+  font-size: 24px;
+  font-size: bold;
+}
+
+.btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 100px;
+  color: #007fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &_submiting {
+    opacity: 0.3;
+  }
+}
+
+.content-input {
+  padding: 20px;
+  width: 60%;
+  min-width: 700px;
+  min-height: calc(100% - 94px);
+  margin: 10px auto;
+  display: block;
+  border: none;
+  border-radius: 6px;
+  background-color: #7273751c;
+  outline: none;
+  line-height: 26px;
+  box-sizing: border-box;
+  letter-spacing: 2px;
+  overflow: hidden;
+}

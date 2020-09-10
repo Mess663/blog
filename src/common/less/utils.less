@@ -1,0 +1,14 @@
+/*多行超出,显示为省略号*/
+.wordEllipsisNum(@lineNum){
+	word-break: break-word;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: @lineNum;
+	-webkit-box-orient: vertical;
+}
+.wordEllipsis(){
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}

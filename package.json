@@ -1,0 +1,56 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "ENV=production webpack --display-modules --sort-modules-by size",
+    "start": "ENV=development webpack-dev-server --open",
+    "watch": "ENV=development webpack --watch --progress",
+    "gulp": "gulp"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "autoprefixer": "^9.7.4",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.4.2",
+    "eslint": "^6.8.0",
+    "eslint-config-alloy": "^3.6.0",
+    "eslint-plugin-html": "^6.0.0",
+    "file-loader": "^6.0.0",
+    "happypack": "^5.0.1",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "img-loader": "^3.0.1",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "less-plugin-clean-css": "^1.5.1",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^1.1.3",
+    "terser-webpack-plugin": "^2.3.5",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "private": true,
+  "browserslist": [
+    "defaults"
+  ],
+  "dependencies": {
+    "axios": "^0.19.2",
+    "html-webpack-inline-source-plugin": "0.0.10",
+    "jquery": "^3.4.1",
+    "marked": "^0.8.2",
+    "showdown": "^1.9.1"
+  }
+}

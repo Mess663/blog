@@ -1,0 +1,52 @@
+@import "~src/common/less/common";
+
+.header {
+  background-color: #333;
+  color: #fff;
+  padding: 30px 30px;
+  display: flex;
+  justify-content: space-between;
+
+  &__name, &__index {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.list {
+  width: 40%;
+  min-width: 500px;
+  margin: 10px auto;
+}
+
+.list-item {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+  text-decoration:none;
+  color:#333;
+  display: block;
+
+  &__title {
+    font-size: 30px;
+    margin-bottom: 10px;
+    .wordEllipsis();
+  }
+
+  &__desc {
+    font-size: 14px;
+    color: #a3a3a3;
+    font-style: italic;
+    line-height: 1.7;
+    margin: 0;
+    .wordEllipsisNum(4);
+  }
+
+  &__time {
+    font-size: 18px;
+    font-family: Lora,'Times New Roman',serif;
+    color: gray;
+    font-style: italic;
+    line-height: 1.7;
+    text-align: right;
+  }
+}
