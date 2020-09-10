@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>VaporSpace</title><link rel="shortcut icon" href=https://raw.githubusercontent.com/Mess663/cloud-image/master/img/20200412110352.png><link href=static/article.a5bee8.css rel=stylesheet></head><body><header class=header><a href=/ class=header__name>VaporSpace</a> <a href=/ class=header__index>首页</a></header><div class=title-wrap><div class=title-inner><h1>git魔法：HEAD的指针变化</h1><p class=time>2020-09-10 05:30</p></div></div><div class=tem style="display: none;">### 一、HEAD是什么？
+### 一、HEAD是什么？
 在git中撤回操作，无论是reset、checkout和revert撤回上一步，都会用到HEAD这个指令字段，但这个HEAD到底指得是什么，一直没搞明白。其实一开始在学git原理的时候，都会看到下面这种图。
 
-![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5f337e9c4b?w=546&amp;h=338&amp;f=png&amp;s=78941)
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5f337e9c4b?w=546&h=338&f=png&s=78941)
 
 告诉你HEAD是一个指针，如果你用`cat .git/HEAD`这个命令查看HEAD，就会知道这里存储的是当前分支，如：`ref: refs/heads/master`。
 
@@ -12,7 +12,7 @@
 ### 二、merge和rebase
 merge是合并分支，rebase是整合分支（个人理解），是直接将分支信息整合进一个链条，这样的好处是看起来简洁。通常的操作是现在短期分支上rebase目标分支，然后在将短期分支merge进去。虽然rebase之后的分支看起来很整洁一贯，但正因为rebase强行将commit整合，就会出现下图这样提交时间先后不分的情况，git统一的处理是将合并进来的分支所有提交放在最前端；
 
-![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5d9d484bcf?w=882&amp;h=494&amp;f=png&amp;s=52203)
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5d9d484bcf?w=882&h=494&f=png&s=52203)
 
 当然，对于某些洁癖来说，rebase确实是个救星，就算是在`--no-ff`这种带分支信息的合并中，用了rebase，也能将一个分支的提交单独提出到一个分叉中，看起来比较直观，不会跟主分支里的提交混淆，不过如果说是一个健康的主分支一般也不会出现这种混淆的情况（分支内直接push），所以这里也就是提一提。
 
@@ -27,7 +27,7 @@ merge是合并分支，rebase是整合分支（个人理解），是直接将分
 3、revert新建一个commit，指针后移，并将目标commit的内容作为本次commit的内容，个人感觉这种操作更安全，毕竟会保留之前的记录；(但是要注意，如果你合并了某个分支，并且revert该分支中的一个commit，不要以为再合并一次这个分支就可以还原那个revert，是不行的，git会默认把这个revert导致的差异对冲掉，你如果想还原，要么reset或者revert那次revert)
 
 下面是三种命令的使用场景总合，来源：https://cn.atlassian.com/git/tutorials/resetting-checking-out-and-reverting
-![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5dbf2c829c?w=1206&amp;h=682&amp;f=png&amp;s=134646)
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5dbf2c829c?w=1206&h=682&f=png&s=134646)
 
 
 ### 四、~ 和 ^
@@ -37,11 +37,11 @@ merge是合并分支，rebase是整合分支（个人理解），是直接将分
 
 而 ~n 则是往上找到n-1层到第一个节点，~2则是找到父亲节点，~3则找到爷爷节点。
 
-![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da67ae8db?w=1038&amp;h=596&amp;f=png&amp;s=113135)
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da67ae8db?w=1038&h=596&f=png&s=113135)
 （c1是曾爷爷）
 
-![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5dc0f8de79?w=1534&amp;h=330&amp;f=png&amp;s=111473)
-![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da5e6a9da?w=1206&amp;h=244&amp;f=png&amp;s=70784)
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5dc0f8de79?w=1534&h=330&f=png&s=111473)
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da5e6a9da?w=1206&h=244&f=png&s=70784)
 
 截图里的操作序列，还少了一个比较重要的点，就是`git reset HEAD~`命令会将HEAD移动到当前commit的第一个父亲节点（9b13a6c 合并），所以从上两个图可以看出，^和~的区别，但目前本人很少遇到用到这两个命令的场景，也暂不了解这两个命令有什么高级的用法，所以点到为止。
 
@@ -57,7 +57,7 @@ merge是合并分支，rebase是整合分支（个人理解），是直接将分
 
 我会去了解这个是因为遇到下面这个问题，git在创建新分支时，因为分支名为`hotfix/1129`，但由于前面refs的实现的原理，本地之前有一个hotfix分支，而这个hotfix分支在`.git/refs/heads/hotfix`这里标记了一个ref，而创建hotfix/1129时，则是想覆盖`.git/refs/heads/hotfix`这个文件为`.git/refs/heads/hotfix/1129`，这么做git自然不允许，所以报错 `refs/heads/hotfix exists`。
 
-![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da37fad2a?w=1116&amp;h=48&amp;f=png&amp;s=8987)
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da37fad2a?w=1116&h=48&f=png&s=8987)
 
 知道了原因后，解决方法有两个，一是使用` git update-ref -d refs/heads/hotfix`去删除hotfix的refs；二是直接删除hotfix这个分支，因为`refs/heads/hotfix`这里其实就是对hotfix分支的引用；
 
@@ -68,4 +68,4 @@ merge是合并分支，rebase是整合分支（个人理解），是直接将分
 - 这次撤回操作可追溯；
 - 相比直接reset，这个不需要强制push远程，因为这是增量操作。如果是reset，远程commit是多于本地的，这时候需要force push才能使远程同步，这个过程如果有人提交了远程就炸了；
 
-如果是revert一次merge的话，需要带上-m %d 命令，表示你需要撤回的阶级，是这次merge还是merge中的某次commit，我的理解就是上面HEAD笔记里提到的父子commit概念；</div><article></article><script src=static/runtime.f6d391.js></script><script src=static/vendor.0ea452.js></script><script src=static/article.6891ac.js></script></body></html>
+如果是revert一次merge的话，需要带上-m %d 命令，表示你需要撤回的阶级，是这次merge还是merge中的某次commit，我的理解就是上面HEAD笔记里提到的父子commit概念；
