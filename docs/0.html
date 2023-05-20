@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VaporSpace</title>
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/Mess663/cloud-image/master/img/20200412110352.png"></head>
+
+<body>
+  <header class="header">
+    <a href="/" class="header__name">VaporSpace</a>
+    <a href="/" class="header__index">首页</a>
+  </header>
+
+  <div class="title-wrap">
+    <div class="title-inner">
+      <h1>git魔法：HEAD的指针变化</h1>
+      <p class="time">2023-05-20 03:19</p>
+    </div>
+  </div>
+
+  <div class="tem" style="display: none;">### 一、HEAD是什么？
+在git中撤回操作，无论是reset、checkout和revert撤回上一步，都会用到HEAD这个指令字段，但这个HEAD到底指得是什么，一直没搞明白。其实一开始在学git原理的时候，都会看到下面这种图。
+
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5f337e9c4b?w=546&amp;h=338&amp;f=png&amp;s=78941)
+
+告诉你HEAD是一个指针，如果你用`cat .git/HEAD`这个命令查看HEAD，就会知道这里存储的是当前分支，如：`ref: refs/heads/master`。
+
+但正如每个git入门教程里说的，这个`refs/heads/master`里存储其实就是当前commit的引用。这里可以理解为一个仓库就是一颗树，每个分支则是不同的树枝，树枝上有不同的节点（代表每一个commit），而commit之前也有父子关系，HEAD指针则是指向commit id，HEAD所在的commit就是目前本地仓库的状态。
+
+那平时我们提交commit则是增加节点，同时HEAD指针后移，这个不必多说。但git的强大，不止如此，还可以通过reset、checkout、revert、merge和rebase等操作指令，花式移动指针，游走于整颗commit树，这个是这次笔记的重点。
+
+### 二、merge和rebase
+merge是合并分支，rebase是整合分支（个人理解），是直接将分支信息整合进一个链条，这样的好处是看起来简洁。通常的操作是现在短期分支上rebase目标分支，然后在将短期分支merge进去。虽然rebase之后的分支看起来很整洁一贯，但正因为rebase强行将commit整合，就会出现下图这样提交时间先后不分的情况，git统一的处理是将合并进来的分支所有提交放在最前端；
+
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5d9d484bcf?w=882&amp;h=494&amp;f=png&amp;s=52203)
+
+当然，对于某些洁癖来说，rebase确实是个救星，就算是在`--no-ff`这种带分支信息的合并中，用了rebase，也能将一个分支的提交单独提出到一个分叉中，看起来比较直观，不会跟主分支里的提交混淆，不过如果说是一个健康的主分支一般也不会出现这种混淆的情况（分支内直接push），所以这里也就是提一提。
+
+但实际上rebase的使用是有原则的，就是不要将私有分支的提交rebase到公共分支，因为这样会导致共有分支的提交记录改变（rebase的原理就是对比合并分支并将commit一一合并，从而用新的commit去覆盖），这样对其他协作者非常不利。可参考rebase的使用：https://cn.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing
+
+如果再带上`squash`命令，就可以直接把被合并分支中的所有commit合并成一个，提交记录就更简洁了，不过可能无法追溯细节提交记录，并且回滚也比较麻烦。
+
+### 三、reset、checkout、revert
+开发的时候，经常需要进行提交撤回的操作，一般用到这三个指令，他们的区别是：
+1、reset只更改HEAD指针指向的commit id，如果这个操作撤回某些commit，则这些commit在log里会消失，并且这些commit引用会在git的垃圾回收处理过程中被删除，也就是这部分树枝之后会被锯掉；
+2、checkout则为移动的目标指针单独建立一个分支，并移动HEAD，原分支不变；
+3、revert新建一个commit，指针后移，并将目标commit的内容作为本次commit的内容，个人感觉这种操作更安全，毕竟会保留之前的记录；(但是要注意，如果你合并了某个分支，并且revert该分支中的一个commit，不要以为再合并一次这个分支就可以还原那个revert，是不行的，git会默认把这个revert导致的差异对冲掉，你如果想还原，要么reset或者revert那次revert)
+
+下面是三种命令的使用场景总合，来源：https://cn.atlassian.com/git/tutorials/resetting-checking-out-and-reverting
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5dbf2c829c?w=1206&amp;h=682&amp;f=png&amp;s=134646)
+
+
+### 四、~ 和 ^
+这两个符号在三中的操作中，经常会用到，个人理解为移动指针的单位。一中提到，commit之间存在父子关系，当commit是一条链没有分叉时，父子关系是递增下去的。如果是中间有合并操作，则上一次合并操作为父亲（暂时怎么理解，我了解的也不够深）。
+
+所以从下面两张图可以看到，^n 符号是父亲节点中找第n-1个（因为^1就是当前节点），像这里^2则是到第一个父亲节点，^3是第二个，如果^4则会报错，因为不存在第三个父亲节点。
+
+而 ~n 则是往上找到n-1层到第一个节点，~2则是找到父亲节点，~3则找到爷爷节点。
+
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da67ae8db?w=1038&amp;h=596&amp;f=png&amp;s=113135)
+（c1是曾爷爷）
+
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5dc0f8de79?w=1534&amp;h=330&amp;f=png&amp;s=111473)
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da5e6a9da?w=1206&amp;h=244&amp;f=png&amp;s=70784)
+
+截图里的操作序列，还少了一个比较重要的点，就是`git reset HEAD~`命令会将HEAD移动到当前commit的第一个父亲节点（9b13a6c 合并），所以从上两个图可以看出，^和~的区别，但目前本人很少遇到用到这两个命令的场景，也暂不了解这两个命令有什么高级的用法，所以点到为止。
+
+### 五、cherry-pick
+这个命令也是一个很好用用的改变commit的指令，如这个指令名，它的作用就是将一个或多个commit捡出（pick），然后合并进当前分支。有点git merge some commit的意思。
+
+### 六、git update-ref
+命令用于更新一个指针文件中的Git对象ID。
+
+在理解这个命令前，需要先了解一下git 的refs文件（http://www.chenchunyong.com/2017/01/06/git-refs-%E8%AF%A6%E8%A7%A3/）
+
+我的理解是，git的refs文件，就是存储git下的各种管理分支的引用，同时远程分支和本地分支的追踪也是依靠这个文件。
+
+我会去了解这个是因为遇到下面这个问题，git在创建新分支时，因为分支名为`hotfix/1129`，但由于前面refs的实现的原理，本地之前有一个hotfix分支，而这个hotfix分支在`.git/refs/heads/hotfix`这里标记了一个ref，而创建hotfix/1129时，则是想覆盖`.git/refs/heads/hotfix`这个文件为`.git/refs/heads/hotfix/1129`，这么做git自然不允许，所以报错 `refs/heads/hotfix exists`。
+
+![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5da37fad2a?w=1116&amp;h=48&amp;f=png&amp;s=8987)
+
+知道了原因后，解决方法有两个，一是使用` git update-ref -d refs/heads/hotfix`去删除hotfix的refs；二是直接删除hotfix这个分支，因为`refs/heads/hotfix`这里其实就是对hotfix分支的引用；
+
+但个人觉得真正的原因就是这个命名导致的，因为出现了hotfix这种过于简单且不符合项目规范的命名，又没有及时删除导致的。因为这次错误是出现在测试人员那里，所以项目最好规范开发不允许取这种简单的分支名，或者不采用 / 符号来做分支划分，可以用 _ 等代替。
+
+### 七、git revert
+将一个操作撤回，并将这次撤回当作一个commit。这么做的好处有很多：
+- 这次撤回操作可追溯；
+- 相比直接reset，这个不需要强制push远程，因为这是增量操作。如果是reset，远程commit是多于本地的，这时候需要force push才能使远程同步，这个过程如果有人提交了远程就炸了；
+
+如果是revert一次merge的话，需要带上-m %d 命令，表示你需要撤回的阶级，是这次merge还是merge中的某次commit，我的理解就是上面HEAD笔记里提到的父子commit概念；</div>
+  <article>
+    
+  </article>
+<script type="text/javascript" src="/static/runtime.2ca5299c3fd6a2ec256c.js"></script><script type="text/javascript" src="/static/vendor.2ca5299c3fd6a2ec256c.js"></script><script type="text/javascript" src="/static/article.2ca5299c3fd6a2ec256c.js"></script></body>
+</html>
