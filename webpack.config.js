@@ -25,7 +25,8 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, 'docs'),
-    filename: `static/[name].[${hashChoice}].js`
+    filename: `static/[name].[${hashChoice}].js`,
+    publicPath: isPro ? '/blog/' : '/',
   },
 
   optimization: {

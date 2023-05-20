@@ -1,4 +1,25 @@
-<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>VaporSpace</title><link rel="shortcut icon" href=https://raw.githubusercontent.com/Mess663/cloud-image/master/img/20200412110352.png><link href=static/article.a5bee8.css rel=stylesheet></head><body><header class=header><a href=/ class=header__name>VaporSpace</a> <a href=/ class=header__index>首页</a></header><div class=title-wrap><div class=title-inner><h1>git魔法：HEAD的指针变化</h1><p class=time>2020-09-10 05:30</p></div></div><div class=tem style="display: none;">### 一、HEAD是什么？
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VaporSpace</title>
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/Mess663/cloud-image/master/img/20200412110352.png"></head>
+
+<body>
+  <header class="header">
+    <a href="/" class="header__name">VaporSpace</a>
+    <a href="/" class="header__index">首页</a>
+  </header>
+
+  <div class="title-wrap">
+    <div class="title-inner">
+      <h1>git魔法｜git的HEAD和HEAD的指针变化</h1>
+      <p class="time">2023-05-20 03:19</p>
+    </div>
+  </div>
+
+  <div class="tem" style="display: none;">### 一、HEAD是什么？
 在git中撤回操作，无论是reset、checkout和revert撤回上一步，都会用到HEAD这个指令字段，但这个HEAD到底指得是什么，一直没搞明白。其实一开始在学git原理的时候，都会看到下面这种图。
 
 ![](https://user-gold-cdn.xitu.io/2020/4/12/1716de5f337e9c4b?w=546&amp;h=338&amp;f=png&amp;s=78941)
@@ -68,4 +89,9 @@ merge是合并分支，rebase是整合分支（个人理解），是直接将分
 - 这次撤回操作可追溯；
 - 相比直接reset，这个不需要强制push远程，因为这是增量操作。如果是reset，远程commit是多于本地的，这时候需要force push才能使远程同步，这个过程如果有人提交了远程就炸了；
 
-如果是revert一次merge的话，需要带上-m %d 命令，表示你需要撤回的阶级，是这次merge还是merge中的某次commit，我的理解就是上面HEAD笔记里提到的父子commit概念；</div><article></article><script src=static/runtime.f6d391.js></script><script src=static/vendor.0ea452.js></script><script src=static/article.6891ac.js></script></body></html>
+如果是revert一次merge的话，需要带上-m %d 命令，表示你需要撤回的阶级，是这次merge还是merge中的某次commit，我的理解就是上面HEAD笔记里提到的父子commit概念；</div>
+  <article>
+    
+  </article>
+<script type="text/javascript" src="/static/runtime.521e113bcc6527cd61fa.js"></script><script type="text/javascript" src="/static/vendor.521e113bcc6527cd61fa.js"></script><script type="text/javascript" src="/static/article.521e113bcc6527cd61fa.js"></script></body>
+</html>
